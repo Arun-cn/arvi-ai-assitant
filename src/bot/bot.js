@@ -1,4 +1,5 @@
 import TelegramBot from "node-telegram-bot-api";
+import { handleMessage } from "../agent/agent.js";
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
 
@@ -14,11 +15,13 @@ const bot = new TelegramBot(token, {
   polling: true,
 });
 
-bot.on("message", (msg) => {
+bot.on("message", async (msg) => {
   const chatId = msg.chat.id;
   const receivedText = msg.text;
-  console.log(`Received message: ${receivedText}`);
-  bot.sendMessage(chatId, `You said: ${receivedText}`);
+  // Handle the received text message and return a reply.
+  const repaly = await handleMessage(receivedText);
+  // console.log(`Received message: ${repaly}`);
+  bot.sendMessage(chatId, `${repaly}`);
 });
 
 export default bot;
