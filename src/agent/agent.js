@@ -1,10 +1,26 @@
 import Groq from "groq-sdk";
+import { addTask, getTasks, updateTask, deleteTask } from "../tools/todo.js";
 
 // Initialize the Groq agent with an API key
 const agent = new Groq({
   apiKey: process.env.GROQ_TOKEN,
 });
 let conversationHistory = [];
+
+// Function to check if AI reply contains a function call
+function checkForFunctionCall(reply) {
+  const functionCallPattern = /(\w+)\((.*?)\)/;
+  const match = reply.match(functionCallPattern);
+  if (match) {
+    const functionName = match[1];
+    const args = match[2].split(",").map((arg) => {
+      const [key, value] = arg.split("=");
+      return value ? value.replace(/"/g, "").trim() : undefined;
+    });
+    return { functionName, args };
+  }
+  return null;
+}
 
 // Function to handle user messages
 export async function handleMessage(userMessage) {
@@ -17,7 +33,7 @@ export async function handleMessage(userMessage) {
       messages: [
         {
           role: "system",
-          content: `You are a helpful AI assistant that manages a to-do list. You have access to the function \`add_to_todo(task: str)\`. When the user asks to add a task, you MUST call this function. If the user asks anything else, respond politely and appropriately. Example: User: "Add buy milk" You: \`add_to_todo(task="buy milk")\` You: "OK."`,
+          content: `You are a helpful AI assistant that manages a to-do list. You have access to the functions \`add_to_todo\`, \`get_tasks\`, \`update_task\`, and \`delete_task\`. When the user asks to add, get, update, or delete a task, you MUST call the appropriate function. If the user asks anything else, respond politely and appropriately. Example: User: "Add buy milk" You: \`add_to_todo(task="buy milk")\` You: "OK."`,
         },
         ...conversationHistory,
       ],
@@ -34,6 +50,35 @@ export async function handleMessage(userMessage) {
     // Collect the response from Groq
     for await (const chunk of groqResponse) {
       assistantReply += chunk.choices[0]?.delta?.content || "";
+    }
+
+    // Check for function calls in the AI reply
+    const functionCall = checkForFunctionCall(assistantReply);
+    if (functionCall) {
+      const { functionName, args } = functionCall;
+      switch (functionName) {
+        case "add_to_todo":
+          addTask(args[0]);
+          assistantReply += "\nOK.";
+          break;
+        case "get_tasks":
+          const tasksList = getTasks();
+          assistantReply += `\nTasks: ${tasksList
+            .map((task) => task.task)
+            .join(", ")}`;
+          break;
+        case "update_task":
+          updateTask(args[0], args[1]);
+          assistantReply += "\nTask updated.";
+          break;
+        case "delete_task":
+          deleteTask(args[0]);
+          assistantReply += "\nTask deleted.";
+          break;
+        default:
+          console.error("Unknown function call:", functionName);
+          break;
+      }
     }
 
     // Check if the response includes a call to add_to_todo function
