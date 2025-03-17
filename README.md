@@ -1,58 +1,38 @@
 # Arvo AI Assistant
 
 ## Overview
-Arvo AI Assistant is an intelligent automation tool designed to enhance productivity by controlling all agents and triggers. This app assists with day-to-day tasks such as managing to-do lists, scheduling plans, and setting reminders. It integrates a Telegram bot with Groq AI to provide a seamless user experience for task management and automation.
+
+Arvo AI Assistant is a personal AI assistant designed to enhance productivity by managing tasks, scheduling plans, and setting reminders while integrating multiple tools and memory systems for intelligent automation. It supports multiple clients, including TV, mobile, desktop, car, and web, ensuring seamless interaction across different platforms.
+
 ## Features
-- **To-Do List Management**: Add and manage tasks in your to-do list.
-- **Scheduling**: Plan and schedule your daily activities.
-- **Reminders**: Set reminders for important tasks and events.
-- **AI Integration**: Leverages Groq AI for intelligent responses and task handling.
-- **Productivity Tool**: Helps improve productivity by automating routine tasks and providing timely reminders.
 
-## Setup
+To-Do List Management: Add and manage tasks efficiently.
 
-### Prerequisites
-- Node.js (v14 or higher)
-- npm (v6 or higher)
-- Telegram Bot Token
-- Groq API Key
+Scheduling & Reminders: Plan daily activities and set reminders.
 
-### Installation
+AI Integration: Utilizes multiple AI models, including local (Ollama) and cloud-based APIs.
 
-1. Clone the repository:
-   ```sh
-   git clone https://github.com/Arun-cn/arvo-ai-assistant.git
-   cd arvo-ai-assistant
-   ```
+Memory System: Combines vector databases for long-term memory and Redis for short-term context.
 
-2. Install dependencies:
-   ```sh
-   npm install
-   ```
+Multimodal Interaction: Supports voice, text, visual input, and output via voice, text, display, and canvas drawing.
 
-3. Create a 
+Custom Triggers & Automations: Sensor-based or tool-based triggers for automation with human-in-the-loop permissions.
 
-.env
+Context Awareness: Uses sensor APIs for location tracking, activity monitoring, and situational adaptation.
 
- file in the root directory and add your environment variables:
-   ```plaintext
-   TELEGRAM_BOT_TOKEN=your-telegram-bot-token
-   GROQ_API_KEY=your-groq-api-key
-   ```
+Home Automation Control: Connects with IoT devices for smart home management.
 
-4. Start the server:
-   ```sh
-   npm start
-   ```
+Multi-Client Support: Accessible across TV, mobile, desktop, car, and web platforms.
 
-## Usage
-- The bot listens for messages on Telegram and processes them using Groq AI.
-- It can handle specific commands like adding tasks to a to-do list, scheduling plans, and setting reminders.
+RAG with Vector Databases: Enhances AI responses with Retrieval-Augmented Generation.
 
-### Example Commands
-- **Add to To-Do List**: `add_to_todo task="Buy groceries"`
-- **Schedule a Plan**: `schedule_plan task="Meeting with team" time="3 PM"`
-- **Set a Reminder**: `set_reminder task="Doctor's appointment" time="10 AM"`
+Warning System: Provides alerts based on predefined conditions.
+
+Encrypted Communication & Security: Ensures secure data transmission and protects personal information.
+
+AI Authentication Awareness: Uses voice, image, and sensor data for user identification, enhancing security for personal conversations and data protection.
+
+
 
 ## Contributing
 We welcome contributions to improve Arvo AI Assistant. Feel free to open issues or submit pull requests for enhancements and bug fixes.
